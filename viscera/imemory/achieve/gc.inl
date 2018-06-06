@@ -84,7 +84,7 @@ namespace ROOT_NAMESPACE
         
         tCache.push_front( insertToCacheList( p_obj ) );
 
-        LOG.debug( " attch object:{1}, {2} mObjCacheList.size() = {0}", mObjCacheList.size(), tClassName, &p_obj );
+        LOG.debug( "attch object:{1}, {2} mObjCacheList.size() = {0}", mObjCacheList.size(), tClassName, &p_obj );
     }
 
     inline baseObj * gc::getObj( const std::string & p_classId )
