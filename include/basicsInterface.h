@@ -8,9 +8,9 @@ namespace ROOT_NAMESPACE
 {
     class basicsInterface : public object
     {
-    protected:
-        virtual void onTick( double p_dt );
-        virtual void onDraw( void );
+    public:
+        virtual void onTick( double p_dt ) = 0;
+        virtual void onDraw( void ) = 0;
     };
 }
 

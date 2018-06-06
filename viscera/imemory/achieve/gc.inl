@@ -26,14 +26,14 @@ namespace ROOT_NAMESPACE
         {
             cache.clear();
         }
-        LOG.debug( "mObjCacheList.size() = {0}", mObjCacheList.size() );
+        // LOG.debug( "mObjCacheList.size() = {0}", mObjCacheList.size() );
 
         //缓存对象排序
         mObjCacheList.sort( []( const baseObj * first, const baseObj * second )->bool{
             return first->frequency() < second->frequency();
         } );
 
-        LOG.debug( "mObjCacheList.size() = {0}", mObjCacheList.size() );
+        // LOG.debug( "mObjCacheList.size() = {0}", mObjCacheList.size() );
 
         //将缓存对象分配到三级缓存
         int tCurrObjIndex = 0;
@@ -69,7 +69,6 @@ namespace ROOT_NAMESPACE
                 tCacheList->operator[]( tObjTypeName ) = new std::list< std::list< baseObj* >::iterator > ();
             }
 
-            LOG.debug( "attch {0} class name: {1}", *item, tObjTypeName );
             tCacheList->operator[]( tObjTypeName )->push_front ( item );
         }
     }
@@ -85,7 +84,7 @@ namespace ROOT_NAMESPACE
         
         tCache.push_front( insertToCacheList( p_obj ) );
 
-        LOG.debug( " attch object:{1} mObjCacheList.size() = {0}", mObjCacheList.size(), tClassName );
+        LOG.debug( " attch object:{1}, {2} mObjCacheList.size() = {0}", mObjCacheList.size(), tClassName, &p_obj );
     }
 
     inline baseObj * gc::getObj( const std::string & p_classId )

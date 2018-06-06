@@ -5,7 +5,7 @@
 #include "imemory/object.hpp"
 #include "basicsInterface.h"
 #include "glm/glm.hpp"
-#include "window.h"
+#include "windowInterface.h"
 
 #include <string>
 #include <list>
@@ -15,19 +15,20 @@ namespace ROOT_NAMESPACE
     class appactionInterface: public basicsInterface
     {
     public:
-        static appactionInterface instance( void );
+        static appactionInterface & instance( void );
 
         virtual void onAppactionStart( void ) = 0;
         virtual void onAppactionFinish( void ) = 0;
 
+        void finish( void );
+
     protected:
         virtual bool init(void) override;
 
-        CREATEFUNC(appactionInterface);
-        ~appactionInterface(void);
+        virtual bool destroy( void ) override;
 
-        virtual void onTick( double p_dt ) override;
-        virtual void onDraw( void ) override;
+        virtual void onTick( double p_dt ) final;
+        virtual void onDraw( void ) final;
 
     private:
         static appactionInterface * sm_appaction;

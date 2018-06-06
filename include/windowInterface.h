@@ -12,16 +12,19 @@ namespace ROOT_NAMESPACE
     class windowInterface: public basicsInterface
     {
     public:
-        static const td::list<windowInterface &> & getAll();
+        static const std::list<windowInterface *> getAll();
     protected:
-        CREATEFUNC(windowInterface);
-
-        virtual void onTick( double p_dt ) override;
 
         virtual bool init(void) override;
+
+        virtual void onTick( double p_dt ) override;
+        virtual void onDraw( void ) override = 0;
+
+        virtual bool destroy( void ) override;
+
     private:
         GLFWwindow * m_glfwWindow;
-        static std::list<windowInterface &> sm_windowList;
+        static std::list<windowInterface *> sm_windowList;
     };
 }
 

@@ -1,15 +1,26 @@
 #include "appactionInterface.h"
 #include "windowInterface.h"
+#include "tools/log.hpp"
 
 namespace ROOT_NAMESPACE
 {
 
     appactionInterface * appactionInterface::sm_appaction = nullptr;
 
+    appactionInterface & appactionInterface::instance( void )
+    {
+        return *sm_appaction;
+    }
+
+    void appactionInterface::finish( void )
+    {
+        m_appactionRunning = false;
+    }
+
     bool appactionInterface::init(void)
     {
 
-        if( m_appaction )
+        if( sm_appaction )
         {
             return true;
         }
@@ -24,7 +35,7 @@ namespace ROOT_NAMESPACE
             return true;
         }
 
-        m_appaction = this;
+        sm_appaction = this;
         onAppactionStart();
 
         m_appactionTime = glfwGetTime();
@@ -32,7 +43,7 @@ namespace ROOT_NAMESPACE
         m_appactionRunning = true;
 
         //如果没有创建任何窗口 程序结束
-        if( windowInterface::getAll().count <= 0 )
+        if( windowInterface::getAll().size() <= 0 )
         {
             m_appactionRunning = false;
         }
@@ -44,26 +55,35 @@ namespace ROOT_NAMESPACE
             onDraw();
         }
 
+        onAppactionFinish();
+        glfwTerminate();
         return false;
     }
 
-    appactionInterface::~appactionInterface(void)
+    bool appactionInterface::destroy(void)
     {
-        onAppactionFinish();
+        LOG.info("appactionInterface destroy");
+
+        return object::destroy();
     }
 
     void appactionInterface::onTick( double p_dt )
     {
-        for( windowInterface & item : windowInterface::getAll() )
+        for( basicsInterface * item : windowInterface::getAll() )
         {
-            item.onTick( p_dt );
+            item->onTick( p_dt );
+        }
+
+        if( windowInterface::getAll().size() > 0 )
+        {
+            glfwPollEvents();
         }
     }
     void appactionInterface::onDraw( void )
     {
-        for( windowInterface & item : windowInterface::getAll() )
+        for( basicsInterface * item : windowInterface::getAll() )
         {
-            item.onDraw();
+            item->onDraw();
         }
     }
 }

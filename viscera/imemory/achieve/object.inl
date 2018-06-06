@@ -15,20 +15,13 @@ namespace ROOT_NAMESPACE
     {
         baseObj::release();
 
-        if( baseObj::quote() > 0 ) return;
-
-        if( quote() < 0 )
+        if( baseObj::quote() <= 0 )
         {
-            LOG.warning( "release does not match retain" );
+            this->destroy();
+            gcWorker::remove( *this );
+            gc::instance().cacheObj( *this );
         }
 
-        if( quote() > 0 || this->destroy() )
-        {
-            return;
-        }
-
-        gcWorker::remove( *this );
-        gc::instance().cacheObj( *this );
     }
 
     inline bool object::init( void )

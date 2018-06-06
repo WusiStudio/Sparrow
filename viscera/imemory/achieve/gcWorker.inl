@@ -71,14 +71,35 @@ namespace ROOT_NAMESPACE
             LOG.warning ( "the current thread has no gcWorker!" );
             return;
         }
-        std::list< baseObj * > & tMangeObjectList = GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->top()->mManageObjList;
-        for( std::list< baseObj * >::iterator t_item = tMangeObjectList.begin(); t_item != tMangeObjectList.end(); ++t_item )
+
+        std::stack< gcWorker * > t_tempStack;
+        while( !GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->empty() )
         {
-            if( *t_item == &p_bobj )
+            bool t_findObject = false;
+            t_tempStack.push(GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->top());
+            GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->pop();
+            std::list< baseObj * > & t_ManageObjList = t_tempStack.top()->mManageObjList;
+
+            for( std::list< baseObj * >::iterator t_item = t_ManageObjList.begin(); t_item != t_ManageObjList.end(); ++t_item )
             {
-                tMangeObjectList.erase(t_item);
+                if( *t_item == &p_bobj )
+                {
+                    t_ManageObjList.erase(t_item);
+                    t_findObject = true;
+                    break;
+                }
+            }
+
+            if(t_findObject)
+            {
                 break;
             }
+        }
+
+        while( !t_tempStack.empty() )
+        {
+            GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->push(t_tempStack.top());
+            t_tempStack.pop();
         }
     }
 
@@ -91,7 +112,6 @@ namespace ROOT_NAMESPACE
         }
 
         std::list< baseObj * > & t_ManageObjList = GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->top()->mManageObjList;
-
 
         for(baseObj * item : t_ManageObjList)
         {

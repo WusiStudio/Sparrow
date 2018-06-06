@@ -55,3 +55,4 @@ include_directories(deps/glm)
 add_library(${PROJECT_NAME} ${SOURCE})
 
 add_subdirectory(test/init_test)
+add_subdirectory(test/framework_test)
