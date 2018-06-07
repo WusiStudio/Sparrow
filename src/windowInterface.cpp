@@ -5,9 +5,33 @@ namespace ROOT_NAMESPACE
 {
     std::list<windowInterface *> windowInterface::sm_windowList;
 
-    const std::list<windowInterface *> windowInterface::getAll()
+    const std::list<windowInterface *> windowInterface::GetAll()
     {
         return sm_windowList;
+    }
+
+    bool windowInterface::initWindow( const std::string & p_name, const glm::ivec2 & p_size, const glm::ivec2 & p_position )
+    {
+        if( object::init() )
+        {
+            return true;
+        }
+
+        m_glfwWindow = glfwCreateWindow(p_size.x, p_size.y, p_name.c_str(), NULL, NULL);
+
+        if (!m_glfwWindow)
+        {
+            LOG.info("create window faild");
+            glfwTerminate();
+            return true;
+        }
+
+        glfwSetWindowPos(m_glfwWindow, p_position.x, p_position.y );
+
+        retain();
+        sm_windowList.push_back( this );
+
+        return false;
     }
 
     bool windowInterface::init(void)
@@ -16,16 +40,6 @@ namespace ROOT_NAMESPACE
         {
             return true;
         }
-
-        m_glfwWindow = glfwCreateWindow(640, 480, "window interface", NULL, NULL);
-        if (!m_glfwWindow)
-        {
-            glfwTerminate();
-            return true;
-        }
-
-        retain();
-        sm_windowList.push_back( this );
 
         return false;
     }

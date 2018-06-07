@@ -17,6 +17,8 @@ namespace ROOT_NAMESPACE
     public:
         static appactionInterface & instance( void );
 
+        static const std::list< glm::ivec2 > GetScreenSize();
+
         virtual void onAppactionStart( void ) = 0;
         virtual void onAppactionFinish( void ) = 0;
 

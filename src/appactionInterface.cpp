@@ -12,6 +12,25 @@ namespace ROOT_NAMESPACE
         return *sm_appaction;
     }
 
+    const std::list< glm::ivec2 > appactionInterface::GetScreenSize()
+    {
+        std::list< glm::ivec2 > t_result;
+
+        int t_monitorCount;
+        GLFWmonitor ** t_pMonitor =  glfwGetMonitors( &t_monitorCount );
+
+        LOG.info("Now, Screen number is ", t_monitorCount);
+        for(int i = 0; i < t_monitorCount; i++){
+            const GLFWvidmode * t_mode = glfwGetVideoMode( t_pMonitor[i] );
+
+            LOG.info("Screen size is X: {0}, Y: {1}", t_mode->width, t_mode->height);
+
+            t_result.push_back( glm::ivec2( t_mode->width, t_mode->height ) );
+        }
+
+        return t_result;
+    }
+
     void appactionInterface::finish( void )
     {
         m_appactionRunning = false;
@@ -35,6 +54,19 @@ namespace ROOT_NAMESPACE
             return true;
         }
 
+        //设置参数
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+        //设置多重采样
+        glfwWindowHint(GLFW_SAMPLES, 16);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+        // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        // glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
         sm_appaction = this;
         onAppactionStart();
 
@@ -43,7 +75,7 @@ namespace ROOT_NAMESPACE
         m_appactionRunning = true;
 
         //如果没有创建任何窗口 程序结束
-        if( windowInterface::getAll().size() <= 0 )
+        if( windowInterface::GetAll().size() <= 0 )
         {
             m_appactionRunning = false;
         }
@@ -69,19 +101,19 @@ namespace ROOT_NAMESPACE
 
     void appactionInterface::onTick( double p_dt )
     {
-        for( basicsInterface * item : windowInterface::getAll() )
+        for( basicsInterface * item : windowInterface::GetAll() )
         {
             item->onTick( p_dt );
         }
 
-        if( windowInterface::getAll().size() > 0 )
+        if( windowInterface::GetAll().size() > 0 )
         {
             glfwPollEvents();
         }
     }
     void appactionInterface::onDraw( void )
     {
-        for( basicsInterface * item : windowInterface::getAll() )
+        for( basicsInterface * item : windowInterface::GetAll() )
         {
             item->onDraw();
         }
