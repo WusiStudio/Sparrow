@@ -9,7 +9,7 @@ namespace ROOT_NAMESPACE
 {
     inline gcWorker::gcWorker(void)
     {
-        mThreadId = ROOT_NAMESPACE::PthreadSelf();
+        mThreadId = PthreadSelf();
         if( GcWorkers().find( mThreadId ) == GcWorkers().end() )
         {
             GcWorkers()[ mThreadId ] = new std::stack< gcWorker * >();
@@ -56,28 +56,28 @@ namespace ROOT_NAMESPACE
     //将对象加入自动回收系统
     inline void gcWorker::autoRelease( baseObj & p_bobj )
     {
-        if ( !GcWorkers().size () || GcWorkers().find( ROOT_NAMESPACE::PthreadSelf () ) == GcWorkers().end() || !GcWorkers()[ROOT_NAMESPACE::PthreadSelf ()]->size())
+        if ( !GcWorkers().size () || GcWorkers().find( PthreadSelf () ) == GcWorkers().end() || !GcWorkers()[PthreadSelf ()]->size())
         {
             LOG.warning ( "the current thread has no gcWorker!" );
             return;
         }
-        GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->top()->mManageObjList.push_back( &p_bobj );
+        GcWorkers()[PthreadSelf()]->top()->mManageObjList.push_back( &p_bobj );
     }
 
     inline void gcWorker::remove( baseObj & p_bobj )
     {
-        if ( !GcWorkers().size () || GcWorkers().find( ROOT_NAMESPACE::PthreadSelf () ) == GcWorkers().end() || !GcWorkers()[ROOT_NAMESPACE::PthreadSelf ()]->size())
+        if ( !GcWorkers().size () || GcWorkers().find( PthreadSelf () ) == GcWorkers().end() || !GcWorkers()[PthreadSelf ()]->size())
         {
             LOG.warning ( "the current thread has no gcWorker!" );
             return;
         }
 
         std::stack< gcWorker * > t_tempStack;
-        while( !GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->empty() )
+        while( !GcWorkers()[PthreadSelf()]->empty() )
         {
             bool t_findObject = false;
-            t_tempStack.push(GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->top());
-            GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->pop();
+            t_tempStack.push(GcWorkers()[PthreadSelf()]->top());
+            GcWorkers()[PthreadSelf()]->pop();
             std::list< baseObj * > & t_ManageObjList = t_tempStack.top()->mManageObjList;
 
             for( std::list< baseObj * >::iterator t_item = t_ManageObjList.begin(); t_item != t_ManageObjList.end(); ++t_item )
@@ -98,20 +98,20 @@ namespace ROOT_NAMESPACE
 
         while( !t_tempStack.empty() )
         {
-            GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->push(t_tempStack.top());
+            GcWorkers()[PthreadSelf()]->push(t_tempStack.top());
             t_tempStack.pop();
         }
     }
 
     inline void gcWorker::immediatelyDestroy( void )
     {
-        if ( !GcWorkers().size () || GcWorkers().find( ROOT_NAMESPACE::PthreadSelf () ) == GcWorkers().end() || !GcWorkers()[ROOT_NAMESPACE::PthreadSelf ()]->size())
+        if ( !GcWorkers().size () || GcWorkers().find( PthreadSelf () ) == GcWorkers().end() || !GcWorkers()[PthreadSelf ()]->size())
         {
             LOG.warning ( "the current thread has no gcWorker!" );
             return;
         }
 
-        std::list< baseObj * > & t_ManageObjList = GcWorkers()[ROOT_NAMESPACE::PthreadSelf()]->top()->mManageObjList;
+        std::list< baseObj * > & t_ManageObjList = GcWorkers()[PthreadSelf()]->top()->mManageObjList;
 
         for(baseObj * item : t_ManageObjList)
         {

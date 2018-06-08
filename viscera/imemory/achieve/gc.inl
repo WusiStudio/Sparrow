@@ -10,7 +10,7 @@ namespace ROOT_NAMESPACE
 {
     inline gc & gc::instance()
     {
-        unsigned int tThreadId = ROOT_NAMESPACE::PthreadSelf();
+        unsigned int tThreadId = PthreadSelf();
         if( Instances().find( tThreadId ) == Instances().end() )
         {
             Instances()[ tThreadId ] = new gc();

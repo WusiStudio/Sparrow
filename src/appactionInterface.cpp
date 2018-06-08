@@ -39,6 +39,8 @@ namespace ROOT_NAMESPACE
     bool appactionInterface::init(void)
     {
 
+        m_mainWindow = nullptr;
+
         if( sm_appaction )
         {
             return true;
@@ -62,10 +64,6 @@ namespace ROOT_NAMESPACE
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-        // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        // glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
         sm_appaction = this;
         onAppactionStart();
@@ -85,6 +83,12 @@ namespace ROOT_NAMESPACE
             onTick( glfwGetTime() - m_appactionTime );
             m_appactionTime = glfwGetTime();
             onDraw();
+
+            if( windowInterface::GetAll().size() > 0 )
+            {
+                glfwPollEvents();
+            }
+            IMGCMake
         }
 
         onAppactionFinish();
@@ -104,11 +108,6 @@ namespace ROOT_NAMESPACE
         for( basicsInterface * item : windowInterface::GetAll() )
         {
             item->onTick( p_dt );
-        }
-
-        if( windowInterface::GetAll().size() > 0 )
-        {
-            glfwPollEvents();
         }
     }
     void appactionInterface::onDraw( void )

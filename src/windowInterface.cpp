@@ -47,13 +47,13 @@ namespace ROOT_NAMESPACE
     void windowInterface::onTick( double p_dt )
     {
         IMSTACK
-        if( glfwWindowShouldClose(m_glfwWindow) )
+        if( glfwWindowShouldClose( m_glfwWindow ) )
         {
             sm_windowList.remove( this );
 
             release();
 
-            glfwDestroyWindow(m_glfwWindow);
+            glfwDestroyWindow( m_glfwWindow );
             m_glfwWindow = nullptr;
 
             // 窗口关闭 退出app
@@ -61,9 +61,22 @@ namespace ROOT_NAMESPACE
             {
                 appactionInterface::instance().finish();
             }
+            return;
         }
+    }
 
-        IMGCMake
+    void windowInterface::onDraw( void )
+    {
+        IMSTACK
+        glfwMakeContextCurrent( m_glfwWindow );
+
+        // glViewport(0, 0, width, height);
+
+        glClearColor(1.0f, 0.05f, 0.2f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glfwSwapBuffers( m_glfwWindow );
+        LOG.info("draw");
     }
 
     bool windowInterface::destroy()

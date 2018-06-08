@@ -24,18 +24,22 @@ namespace ROOT_NAMESPACE
 
         void finish( void );
 
+        void appendWindow( windowInterface & p_window );
+
     protected:
         virtual bool init(void) override;
 
         virtual bool destroy( void ) override;
 
+    private:
+
         virtual void onTick( double p_dt ) final;
         virtual void onDraw( void ) final;
 
-    private:
         static appactionInterface * sm_appaction;
         double m_appactionTime;
         bool m_appactionRunning;
+        windowInterface * m_mainWindow;
     };
 }
 

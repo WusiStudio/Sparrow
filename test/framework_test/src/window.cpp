@@ -8,7 +8,7 @@ namespace ROOT_NAMESPACE
     {
         const glm::ivec2 t_screenSize = *appaction::GetScreenSize().begin();
 
-        if( windowInterface::initWindow( "haha", glm::ivec2( t_screenSize.x, t_screenSize.y ), glm::ivec2(0) ) )
+        if( windowInterface::initWindow( "haha", glm::ivec2( 800, 600 ), glm::ivec2( (t_screenSize.x - 800) / 2, (t_screenSize.y - 600) / 2 ) ) )
         {
             return true;
         }
@@ -23,6 +23,6 @@ namespace ROOT_NAMESPACE
 
     void window::onDraw( void )
     {
-
+        windowInterface::onDraw();
     }
 }

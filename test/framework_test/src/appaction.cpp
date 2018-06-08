@@ -17,6 +17,8 @@ namespace ROOT_NAMESPACE
     void appaction::onAppactionStart( void )
     {
         window::Create();
+        window::Create();
+        window::Create();
     }
     void appaction::onAppactionFinish( void )
     {

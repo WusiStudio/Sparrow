@@ -40,6 +40,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     add_compile_options(-DCHAR_SET="UTF-8")
     add_compile_options(-DOS_Darwin)
     option(OS_Darwin "" ON)
+
 elseif (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 endif()
 
@@ -53,6 +54,10 @@ include_directories(deps/glfw)
 include_directories(deps/glm)
 
 add_library(${PROJECT_NAME} ${SOURCE})
+
+if(OS_Darwin)
+    target_link_libraries(${PROJECT_NAME} ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
+endif(OS_Darwin)
 
 add_subdirectory(test/init_test)
 add_subdirectory(test/framework_test)
