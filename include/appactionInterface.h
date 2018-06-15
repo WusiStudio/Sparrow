@@ -24,8 +24,6 @@ namespace ROOT_NAMESPACE
 
         void finish( void );
 
-        void appendWindow( windowInterface & p_window );
-
     protected:
         virtual bool init(void) override;
 
@@ -39,7 +37,6 @@ namespace ROOT_NAMESPACE
         static appactionInterface * sm_appaction;
         double m_appactionTime;
         bool m_appactionRunning;
-        windowInterface * m_mainWindow;
     };
 }
 

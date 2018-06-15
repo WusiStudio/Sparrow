@@ -38,9 +38,6 @@ namespace ROOT_NAMESPACE
 
     bool appactionInterface::init(void)
     {
-
-        m_mainWindow = nullptr;
-
         if( sm_appaction )
         {
             return true;

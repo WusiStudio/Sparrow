@@ -15,6 +15,7 @@ namespace ROOT_NAMESPACE
     {
     public:
         static const std::list<windowInterface *> GetAll();
+        static bool isExist( windowInterface * p_window );
     protected:
 
         virtual bool initWindow( const std::string & p_name, const glm::ivec2 & p_size, const glm::ivec2 & p_position = glm::ivec2(0) );
@@ -28,6 +29,9 @@ namespace ROOT_NAMESPACE
     private:
         GLFWwindow * m_glfwWindow;
         static std::list<windowInterface *> sm_windowList;
+
+        int m_fps;
+        time_t m_prveTime;
     };
 }
 
