@@ -15,9 +15,8 @@ aux_source_directory(src SOURCE)
 add_executable(${PROJECT_NAME} ${SOURCE})
 
 # if(OS_Darwin)
-#     find_library(COCOA_LIBRARY Cocoa required)
 #     find_library(OPENGL_LIBRARY OpenGL required)
-#     target_link_libraries(${PROJECT_NAME} ${COCOA_LIBRARY})
+#     target_link_libraries(${PROJECT_NAME})
 # endif(OS_Darwin)
 
 target_link_libraries(${PROJECT_NAME} glfw Sparrow)

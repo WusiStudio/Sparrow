@@ -29,8 +29,8 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
     option(OS_WINDOWS "" ON)
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
-    find_library(COCOA_LIBRARY Cocoa required)
     find_library(OPENGL_LIBRARY OpenGL required)
+    find_library(IOKIT_LIBRARY IOKit required)
 
     set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g")
     set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
@@ -50,13 +50,13 @@ aux_source_directory(src SOURCE)
 
 include_directories(include)
 include_directories(viscera)
-include_directories(deps/glfw)
+include_directories(${CMAKE_HOME_DIRECTORY}/deps/glfw/include)
 include_directories(deps/glm)
 
 add_library(${PROJECT_NAME} ${SOURCE})
 
 if(OS_Darwin)
-    target_link_libraries(${PROJECT_NAME} ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
+    target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARY}/OpenGL.tbd ${IOKIT_LIBRARY}/IOKit.tbd)
 endif(OS_Darwin)
 
 add_subdirectory(test/init_test)
