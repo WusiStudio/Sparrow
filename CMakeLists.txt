@@ -50,14 +50,16 @@ aux_source_directory(src SOURCE)
 
 include_directories(include)
 include_directories(viscera)
-include_directories(${CMAKE_HOME_DIRECTORY}/deps/glfw/include)
+include_directories(${CMAKE_HOME_DIRECTORY}/deps/glfw/include) 
 include_directories(deps/glm)
 
 add_library(${PROJECT_NAME} ${SOURCE})
 
 if(OS_Darwin)
     target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARY}/OpenGL.tbd ${IOKIT_LIBRARY}/IOKit.tbd)
-endif(OS_Darwin)
+elseif(OS_WINDOWS)
+	target_link_libraries(${PROJECT_NAME} opengl32)
+endif()
 
 add_subdirectory(test/init_test)
 add_subdirectory(test/framework_test)

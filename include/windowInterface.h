@@ -22,7 +22,7 @@ namespace ROOT_NAMESPACE
         virtual bool init(void) override;
 
         virtual void onTick( double p_dt ) override;
-        virtual void onDraw( void ) override = 0;
+        virtual void onDraw( void ) override;
 
         virtual bool destroy( void ) override;
 
