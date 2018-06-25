@@ -77,9 +77,9 @@ namespace ROOT_NAMESPACE
         
         while( m_appactionRunning )
         {
-            onTick( glfwGetTime() - m_appactionTime );
+            tick( glfwGetTime() - m_appactionTime );
             m_appactionTime = glfwGetTime();
-            onDraw();
+            draw();
 
             if( windowInterface::GetAll().size() > 0 )
             {
@@ -100,18 +100,18 @@ namespace ROOT_NAMESPACE
         return object::destroy();
     }
 
-    void appactionInterface::onTick( double p_dt )
+    void appactionInterface::tick( double p_dt )
     {
         for( basicsInterface * item : windowInterface::GetAll() )
         {
-            item->onTick( p_dt );
+            item->tick( p_dt );
         }
     }
-    void appactionInterface::onDraw( void )
+    void appactionInterface::draw( void )
     {
         for( basicsInterface * item : windowInterface::GetAll() )
         {
-            item->onDraw();
+            item->draw();
         }
     }
 }

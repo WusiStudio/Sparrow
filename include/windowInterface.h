@@ -21,8 +21,11 @@ namespace ROOT_NAMESPACE
         virtual bool initWindow( const std::string & p_name, const glm::ivec2 & p_size, const glm::ivec2 & p_position = glm::ivec2(0) );
         virtual bool init(void) override;
 
-        virtual void onTick( double p_dt ) override;
-        virtual void onDraw( void ) override;
+        virtual void tick( double p_dt ) override;
+        virtual void draw( void ) override;
+
+        virtual void onTick( double p_dt ) = 0;
+        virtual void onDraw( void ) = 0;
 
         virtual bool destroy( void ) override;
 

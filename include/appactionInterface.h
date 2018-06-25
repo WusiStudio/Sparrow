@@ -31,8 +31,8 @@ namespace ROOT_NAMESPACE
 
     private:
 
-        virtual void onTick( double p_dt ) final;
-        virtual void onDraw( void ) final;
+        virtual void tick( double p_dt ) final;
+        virtual void draw( void ) final;
 
         static appactionInterface * sm_appaction;
         double m_appactionTime;

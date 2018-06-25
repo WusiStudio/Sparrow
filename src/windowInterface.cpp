@@ -62,7 +62,8 @@ namespace ROOT_NAMESPACE
         return false;
     }
 
-    void windowInterface::onTick( double p_dt )
+
+    void windowInterface::tick( double p_dt )
     {
         IMSTACK
         time_t t_time;
@@ -91,9 +92,11 @@ namespace ROOT_NAMESPACE
             }
             return;
         }
+
+        onTick( p_dt );
     }
 
-    void windowInterface::onDraw( void )
+    void windowInterface::draw( void )
     {
         IMSTACK
         glfwMakeContextCurrent( m_glfwWindow );
@@ -103,6 +106,8 @@ namespace ROOT_NAMESPACE
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        onDraw();
 
         glfwSwapBuffers( m_glfwWindow );
         // LOG.info("draw");

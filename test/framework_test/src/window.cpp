@@ -18,11 +18,11 @@ namespace ROOT_NAMESPACE
 
     void window::onTick( double p_dt )
     {
-        windowInterface::onTick( p_dt );
+
     }
 
     void window::onDraw( void )
     {
-        windowInterface::onDraw();
+
     }
 }
