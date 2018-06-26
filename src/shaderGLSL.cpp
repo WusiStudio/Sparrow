@@ -7,7 +7,9 @@ namespace ROOT_NAMESPACE
     {
         shaderGLSL & t_result = Create();
 
-        assert( !t_result.initWitchSource( p_shaderType, p_shaderSource ) );
+        bool t_initResult = t_result.initWitchSource( p_shaderType, p_shaderSource );
+
+        assert( !t_initResult );
 
         return t_result;
     }
@@ -29,36 +31,51 @@ namespace ROOT_NAMESPACE
         m_shaderType = p_shaderType;
         m_shaderId = glCreateShader( m_shaderType );
 
-        if( glIsShader(m_shaderId) != GL_TRUE ){ return true; }
-
-        const GLchar * t_source = p_shaderSource;
-        glShaderSource(m_shaderId, 1, &t_source, nullptr);
-
-        glCompileShader(m_shaderId);
-
-        GLint compiled = 0;
-        glGetShaderiv(m_shaderId, GL_COMPILE_STATUS, &compiled);
-        if( compiled == GL_TRUE ){ return false; }
-
-        GLint infoLen = 0;
-        glGetShaderiv(m_shaderId, GL_INFO_LOG_LENGTH, &infoLen);
-
-        if(infoLen == 0)
-        {
-            LOG.error("# Shader::compile #  Not Fined Error Info");
-            return true;
+        if( glIsShader( m_shaderId ) != GL_TRUE )
+        { 
+            return true; 
         }
 
-        GLchar * buff = new GLchar[infoLen];
-        glGetShaderInfoLog(m_shaderId, infoLen, nullptr, buff);
+        const GLchar * t_source = p_shaderSource;
+        glShaderSource( m_shaderId, 1, &t_source, nullptr );
 
-        LOG.error("# Shader::compile #  {0}", buff);
-        delete [] buff;
+        glCompileShader( m_shaderId );
 
-        return true;
+        GLint compiled = 0;
+        glGetShaderiv( m_shaderId, GL_COMPILE_STATUS, &compiled );
+        if( compiled != GL_TRUE )
+        { 
+            GLint infoLen = 0;
+            glGetShaderiv( m_shaderId, GL_INFO_LOG_LENGTH, &infoLen );
+
+            if( infoLen == 0 )
+            {
+                LOG.error( "# Shader::compile #  Not Fined Error Info" );
+                return true;
+            }
+
+            GLchar * buff = new GLchar[infoLen];
+            glGetShaderInfoLog( m_shaderId, infoLen, nullptr, buff );
+
+            LOG.error( "# Shader::compile #  {0}", buff );
+            delete [] buff;
+            return true; 
+        }
+
+        return false;
     }
 
-    unsigned int shaderId( void )
+    bool shaderGLSL::destroy( void )
+    {
+        if( glIsShader( m_shaderId ) == GL_TRUE )
+        {
+            glDeleteShader( m_shaderId );
+        }
+
+        return false;
+    }
+
+    unsigned int shaderGLSL::shaderId( void ) const
     {
         if( glIsShader( m_shaderId ) != GL_TRUE )
         { 
@@ -66,4 +83,5 @@ namespace ROOT_NAMESPACE
         }
         return 0;
     }
+
 }

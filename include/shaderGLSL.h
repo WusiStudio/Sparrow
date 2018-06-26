@@ -26,12 +26,15 @@ namespace ROOT_NAMESPACE
         virtual bool init( void ) override;
         virtual bool initWitchSource( const ShaderType p_shaderType, const char * p_shaderSource );
 
+        virtual bool destroy( void ) override;
+
     private:
         unsigned int m_shaderId;
         ShaderType m_shaderType;
 
     public:
-         unsigned int shaderId( void );
+        unsigned int shaderId( void ) const;
+
     };
 }
 

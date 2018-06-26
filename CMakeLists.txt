@@ -51,7 +51,8 @@ aux_source_directory(src SOURCE)
 include_directories(include)
 include_directories(viscera)
 include_directories(${CMAKE_HOME_DIRECTORY}/deps/glfw/include) 
-include_directories(deps/glm)
+include_directories(${CMAKE_HOME_DIRECTORY}/deps/glm)
+include_directories(${CMAKE_HOME_DIRECTORY}/deps/glfw/deps)
 
 add_library(${PROJECT_NAME} ${SOURCE})
 
