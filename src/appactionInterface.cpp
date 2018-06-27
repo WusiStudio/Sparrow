@@ -63,7 +63,7 @@ namespace ROOT_NAMESPACE
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
         sm_appaction = this;
-        onAppactionStart();
+        appactionStart();
 
         m_appactionTime = glfwGetTime();
 
@@ -88,7 +88,7 @@ namespace ROOT_NAMESPACE
             IMGCMake
         }
 
-        onAppactionFinish();
+        appactionFinish();
         glfwTerminate();
         return false;
     }
@@ -98,6 +98,18 @@ namespace ROOT_NAMESPACE
         LOG.info("appactionInterface destroy");
 
         return object::destroy();
+    }
+
+    void appactionInterface::appactionStart( void )
+    {
+        IMSTACK
+        onAppactionStart();
+    }
+
+    void appactionInterface::appactionFinish( void )
+    {
+        IMSTACK
+        onAppactionFinish();
     }
 
     void appactionInterface::tick( double p_dt )

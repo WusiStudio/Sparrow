@@ -2,6 +2,9 @@
 #include "tools/log.hpp"
 #include "appaction.h"
 
+#include "file.h"
+#include "tools/md5.hpp"
+
 namespace ROOT_NAMESPACE
 {
     bool window::init(void)
@@ -12,6 +15,15 @@ namespace ROOT_NAMESPACE
         {
             return true;
         }
+
+        LOG.info( "/Users/wusi/Projects/Sparrow/README.md: ", file::ReadAllText( "/Users/wusi/Projects/Sparrow/README.md" ) );
+        LOG.info( "md5: ", md5( file::ReadAllText( "/Users/wusi/Projects/Sparrow/README.md" ) ).digest() );
+
+        std::ifstream t_ifs;
+        t_ifs.open( "/Users/wusi/Projects/Sparrow/README.md" );
+        LOG.info( "md5: ", md5( t_ifs ).digest() );
+
+        // LOG.info( "md5: ", file::MD5( "/Users/wusi/Projects/Sparrow/README.md" ) );
 
         return false;
     }

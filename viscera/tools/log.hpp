@@ -69,6 +69,6 @@ namespace ROOT_NAMESPACE
     #define LOG ROOT_NAMESPACE::log::Instance()
 }
 
-#include "achieve/log.inl"
-
 #endif //__LOG_HPP__
+
+#include "achieve/log.inl"

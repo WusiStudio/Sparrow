@@ -29,6 +29,9 @@ namespace ROOT_NAMESPACE
 
         virtual bool destroy( void ) override;
 
+        void appactionStart( void );
+        void appactionFinish( void );
+
     private:
 
         virtual void tick( double p_dt ) final;
