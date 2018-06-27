@@ -21,19 +21,19 @@ namespace ROOT_NAMESPACE
     #define S42 10   
     #define S43 15   
     #define S44 21   
-
-
+    
+    
     /* F, G, H and I are basic MD5 functions.  
     */  
     #define F(x, y, z) (((x) & (y)) | ((~x) & (z)))   
     #define G(x, y, z) (((x) & (z)) | ((y) & (~z)))   
     #define H(x, y, z) ((x) ^ (y) ^ (z))   
     #define I(x, y, z) ((y) ^ ((x) | (~z)))   
-
+    
     /* ROTATE_LEFT rotates x left n bits.  
     */  
     #define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32-(n))))   
-
+    
     /* FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.  
     Rotation is separate from addition to prevent recomputation.  
     */  
@@ -43,43 +43,51 @@ namespace ROOT_NAMESPACE
     #define II(a, b, c, d, x, s, ac) { (a) += I ((b), (c), (d)) + (x) + ac; (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }   
 
 
-    const byte md5::PADDING[64] = { 0x80 };   
-    const char md5::HEX[16] = {   
-        '0', '1', '2', '3',   
-        '4', '5', '6', '7',   
-        '8', '9', 'a', 'b',   
-        'c', 'd', 'e', 'f'  
-    };  
+    inline const byte * md5::PADDING( void )
+    {
+        static const byte st_padding[64] = { 0x80 };
+        return st_padding;
+    }
+    inline const char * md5::HEX( void )
+    {
+        static char st_hex[16] = {   
+            '0', '1', '2', '3',   
+            '4', '5', '6', '7',   
+            '8', '9', 'a', 'b',   
+            'c', 'd', 'e', 'f'  
+        };  
+        return st_hex;
+    }
 
     /* Default construct. */  
-    md5::md5( void ) 
+    inline md5::md5( void ) 
     {   
-        reset();   
+        // reset();   
     }   
     
     /* Construct a md5 object with a input buffer. */  
-    md5::md5( const void * input, size_t length ) 
+    inline md5::md5( const void * input, size_t length ) 
     {   
         reset();   
         update( input, length );   
     }   
     
     /* Construct a md5 object with a string. */  
-    md5::md5( const std::string & str ) 
+    inline md5::md5( const std::string & str ) 
     {   
         reset();   
         update( str );   
     }   
     
     /* Construct a md5 object with a file. */  
-    md5::md5( std::ifstream& in ) 
+    inline md5::md5( std::ifstream & in ) 
     {   
         reset();   
         update( in );   
     }   
     
     /* Return the message-digest */  
-    const std::string md5::digest( void ) 
+    inline const std::string md5::digest( void ) 
     {   
         if (!_finished) 
         {   
@@ -90,7 +98,7 @@ namespace ROOT_NAMESPACE
     }   
     
     /* Reset the calculate state */  
-    void md5::reset( void ) 
+    inline void md5::reset( void ) 
     {   
         _finished = false;   
         /* reset number of bits. */  
@@ -103,19 +111,19 @@ namespace ROOT_NAMESPACE
     }   
     
     /* Updating the context with a input buffer. */  
-    void md5::update( const void* input, size_t length ) 
+    inline void md5::update( const void * input, size_t length ) 
     {   
         update( (const byte*)input, length );   
     }   
     
     /* Updating the context with a string. */  
-    void md5::update( const std::string & str ) 
+    inline void md5::update( const std::string & str ) 
     {   
         update( (const byte*)str.c_str(), str.length() );   
     }   
     
     /* Updating the context with a file. */  
-    void md5::update( std::ifstream & in ) 
+    inline void md5::update( std::ifstream & in ) 
     {   
         if ( !in ) 
         {   
@@ -130,7 +138,7 @@ namespace ROOT_NAMESPACE
             length = in.gcount();   
             if ( length > 0 ) 
             {   
-                update( buffer, length );   
+                update( buffer, (size_t)length );   
             }   
         }   
         in.close();   
@@ -140,7 +148,7 @@ namespace ROOT_NAMESPACE
     operation, processing another message block, and updating the  
     context.  
     */  
-    void md5::update( const byte* input, size_t length ) 
+    inline void md5::update( const byte* input, size_t length ) 
     {   
     
         uint32 i, index, partLen;   
@@ -184,7 +192,7 @@ namespace ROOT_NAMESPACE
     /* md5 finalization. Ends an md5 message-_digest operation, writing the  
     the message _digest and zeroizing the context.  
     */  
-    void md5::final( void ) 
+    inline void md5::final( void ) 
     {   
         byte bits[8];   
         uint32 oldState[4];   
@@ -201,7 +209,7 @@ namespace ROOT_NAMESPACE
         /* Pad out to 56 mod 64. */  
         index = (uint32)( ( _count[0] >> 3 ) & 0x3f );   
         padLen = ( index < 56 ) ? ( 56 - index ) : ( 120 - index );   
-        update( PADDING, padLen );   
+        update( PADDING(), padLen );   
     
         /* Append length (before padding) */  
         update( bits, 8 );   
@@ -215,7 +223,7 @@ namespace ROOT_NAMESPACE
     }   
     
     /* md5 basic transformation. Transforms _state based on block. */  
-    void md5::transform( const byte block[64] ) 
+    inline void md5::transform( const byte block[64] ) 
     {   
     
         uint32 a = _state[0], b = _state[1], c = _state[2], d = _state[3], x[16];   
@@ -303,7 +311,7 @@ namespace ROOT_NAMESPACE
     /* Encodes input (ulong) into output (byte). Assumes length is  
     a multiple of 4.  
     */  
-    void md5::encode( const uint32* input, byte* output, size_t length ) 
+    inline void md5::encode( const uint32* input, byte* output, size_t length ) 
     {   
         for ( size_t i = 0, j = 0; j < length; ++i, j += 4 ) 
         {   
@@ -317,7 +325,7 @@ namespace ROOT_NAMESPACE
     /* Decodes input (byte) into output (ulong). Assumes length is  
     a multiple of 4.  
     */  
-    void md5::decode( const byte* input, uint32* output, size_t length ) 
+    inline void md5::decode( const byte* input, uint32* output, size_t length ) 
     {   
         for ( size_t i = 0, j = 0; j < length; ++i, j += 4 ) 
         {   
@@ -327,7 +335,7 @@ namespace ROOT_NAMESPACE
     }   
     
     /* Convert byte array to hex string. */  
-    std::string md5::bytesToHexString( const byte* input, size_t length ) 
+    inline std::string md5::bytesToHexString( const byte* input, size_t length ) 
     {   
         std::string str;   
         str.reserve(length << 1);   
@@ -336,8 +344,8 @@ namespace ROOT_NAMESPACE
             int t = input[i];   
             int a = t / 16;   
             int b = t % 16;   
-            str.append(1, HEX[a]);   
-            str.append(1, HEX[b]);   
+            str.append(1, HEX()[a]);   
+            str.append(1, HEX()[b]);   
         }   
         return str;   
     }   

@@ -13,7 +13,7 @@
 
 namespace ROOT_NAMESPACE
 {
-    file & file::Create( const std::string & p_filePath, unsigned int p_mode )
+    file & file::Create( const std::string & p_filePath, const std::ios_base::openmode p_mode )
     {
         file & t_result = Create();
 
@@ -57,7 +57,7 @@ namespace ROOT_NAMESPACE
 
         m_fs.seekg( 0, std::ios::beg );
 
-        return end - begin;
+        return (unsigned int)( end - begin );
     }
 
 

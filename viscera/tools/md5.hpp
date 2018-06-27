@@ -7,8 +7,6 @@
 
 namespace ROOT_NAMESPACE
 {
-    #define MD5_KEY "Sparrow"
-
     /* Type define */  
     typedef unsigned char byte;   
     typedef unsigned int uint32;   
@@ -39,15 +37,17 @@ namespace ROOT_NAMESPACE
         md5( const md5 & );   
         md5 & operator=( const md5 & );   
     
-    private:   
         uint32 _state[4]; /* state (ABCD) */  
         uint32 _count[2]; /* number of bits, modulo 2^64 (low-order word first) */  
         byte _buffer[64]; /* input buffer */  
         byte _digest[16]; /* message digest */  
         bool _finished; /* calculate finished ? */  
+
+        static const byte * PADDING( void );
+        static const char * HEX( void );
     
-        static const byte PADDING[64]; /* padding for calculate */  
-        static const char HEX[16];
+        // static const byte PADDING[64]; /* padding for calculate */  
+        // static const char HEX[16];
         enum { BUFFER_SIZE = 1024 };   
     };
 }

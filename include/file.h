@@ -12,7 +12,7 @@ namespace ROOT_NAMESPACE
     class file : public object
     {
     public:
-        static file & Create( const std::string & p_filePath, std::ios_base::openmode p_mode = std::fstream::in | std::fstream::out | std::fstream::app );
+        static file & Create( const std::string & p_filePath, const std::ios_base::openmode p_mode = std::fstream::in | std::fstream::out | std::fstream::app );
 
         static bool PathIsExist( const std::string & p_filePath );
 

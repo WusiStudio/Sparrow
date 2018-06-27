@@ -22,6 +22,6 @@ namespace ROOT_NAMESPACE
     };
 }
 
-#include "achieve/thread.inl"
-
 #endif //__THREAD_H__
+
+#include "achieve/thread.inl"
