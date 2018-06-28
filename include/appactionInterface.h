@@ -26,6 +26,7 @@ namespace ROOT_NAMESPACE
 
     protected:
         virtual bool init(void) override;
+        virtual bool initWithParameter( int p_argc, char ** p_argv ) final;
 
         virtual bool destroy( void ) override;
 
@@ -34,12 +35,15 @@ namespace ROOT_NAMESPACE
 
     private:
 
+        bool startParameter( int p_argc, char ** p_argv );
+
         virtual void tick( double p_dt ) final;
         virtual void draw( void ) final;
 
         static appactionInterface * sm_appaction;
         double m_appactionTime;
         bool m_appactionRunning;
+        std::string m_appactionPath;
     };
 }
 

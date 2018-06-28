@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.7)
 
 project(SparrowInitTest)
 
-message(${CMAKE_HOME_DIRECTORY})
-
 include_directories(${CMAKE_HOME_DIRECTORY}/deps/glfw/include)
 include_directories(${CMAKE_HOME_DIRECTORY}/viscera/tools)
 

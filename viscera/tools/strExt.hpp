@@ -45,6 +45,9 @@ namespace ROOT_NAMESPACE
 	//格式化字符串
 	template<typename... Arguments>
 	std::string strFormat( std::string p_str, const Arguments & ... p_args );
+
+	//分割字符串
+	std::vector<std::string> split( const std::string & p_str, const std::string & p_clapboard );
 }
 
 #endif //__STR_EXT_HPP__

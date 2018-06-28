@@ -9,9 +9,9 @@ namespace ROOT_NAMESPACE
     class appaction: public appactionInterface
     {
     public:
-        CREATEFUNC(appaction);
-    
+        static appaction & Create( int p_argc, char ** p_argv );
     protected:
+        CREATEFUNC(appaction);
         virtual bool init(void) override;
 
         virtual void onAppactionStart( void ) override;

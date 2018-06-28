@@ -12,6 +12,7 @@ namespace ROOT_NAMESPACE
         CREATEFUNC(window);
     protected:
         virtual bool init(void) override;
+        
 
         virtual void onTick( double p_dt ) override;
         virtual void onDraw( void ) override;

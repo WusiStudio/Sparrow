@@ -2,6 +2,12 @@
 #include "windowInterface.h"
 #include "tools/log.hpp"
 
+#if defined(OS_WINDOWS)
+    #define PATH_SPACE "\\"
+#else
+    #define PATH_SPACE "/"
+#endif
+
 namespace ROOT_NAMESPACE
 {
 
@@ -48,6 +54,18 @@ namespace ROOT_NAMESPACE
             return true;
         }
 
+        m_appactionPath = "";
+
+        return false;
+    }
+
+    bool appactionInterface::initWithParameter( int p_argc, char ** p_argv )
+    {
+        if( startParameter( p_argc, p_argv ) )
+        {
+            return true;
+        }
+
         if ( !glfwInit() )
         {
             return true;
@@ -90,6 +108,7 @@ namespace ROOT_NAMESPACE
 
         appactionFinish();
         glfwTerminate();
+
         return false;
     }
 
@@ -110,6 +129,22 @@ namespace ROOT_NAMESPACE
     {
         IMSTACK
         onAppactionFinish();
+    }
+
+    bool appactionInterface::startParameter( int p_argc, char ** p_argv )
+    {
+
+        //加载
+        std::string t_appPath = p_argv[0];
+
+        std::vector<std::string> t_list = split( t_appPath, PATH_SPACE );
+
+        for( std::string & t_item : t_list )
+        {
+            LOG.info("dir: ", t_item);
+        }
+
+        return false;
     }
 
     void appactionInterface::tick( double p_dt )

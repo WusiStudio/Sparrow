@@ -17,14 +17,14 @@ namespace ROOT_NAMESPACE
             return true;
         }
 
-        LOG.info( "C:\\Users\\wusid\\WusiStudio\\Sparrow\\README.md: ", file::ReadAllText( "C:\\Users\\wusid\\WusiStudio\\Sparrow\\README.md" ) );
-        LOG.info( "md5: ", md5( file::ReadAllText( "C:\\Users\\wusid\\WusiStudio\\Sparrow\\README.md" ) ).digest() );
+        // LOG.info( "a.vert: ", file::ReadAllText( "./assets/shader/a.vert" ) );
+        LOG.info( "md5: ", md5( file::ReadAllText( "/Users/wusi/Projects/Sparrow/README.md" ) ).digest() );
 
         std::ifstream t_ifs;
-        t_ifs.open( "C:\\Users\\wusid\\WusiStudio\\Sparrow\\README.md" );
+        t_ifs.open( "/Users/wusi/Projects/Sparrow/README.md", std::ios::binary );
         LOG.info( "md5: ", md5( t_ifs ).digest() );
 
-        LOG.info( "md5: ", file::MD5( "C:\\Users\\wusid\\WusiStudio\\Sparrow\\README.md" ) );
+        LOG.info( "md5: ", file::MD5( "/Users/wusi/Projects/Sparrow/README.md" ) );
 
         return false;
     }

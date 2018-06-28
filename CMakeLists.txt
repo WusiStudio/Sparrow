@@ -45,6 +45,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 endif()
 
 add_compile_options(-DROOT_NAMESPACE=ws)
+add_compile_options(-DASSETS_PATH=${CMAKE_HOME_DIRECTORY}/build/bin/assets/)
 
 aux_source_directory(src SOURCE)
 
@@ -56,10 +57,16 @@ include_directories(${CMAKE_HOME_DIRECTORY}/deps/glfw/deps)
 
 add_library(${PROJECT_NAME} ${SOURCE})
 
+# #输出路径
+# SET(LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build/bin)
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/build/bin)
+
 if(OS_Darwin)
     target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARY}/OpenGL.tbd ${IOKIT_LIBRARY}/IOKit.tbd)
+    FILE(COPY ${CMAKE_HOME_DIRECTORY}/assets DESTINATION ${CMAKE_HOME_DIRECTORY}/build/bin)
 elseif(OS_WINDOWS)
-	target_link_libraries(${PROJECT_NAME} opengl32)
+    target_link_libraries(${PROJECT_NAME} opengl32)
+    FILE(COPY ${CMAKE_HOME_DIRECTORY}/assets DESTINATION ${CMAKE_HOME_DIRECTORY}/build/bin/${CMAKE_BUILD_TYPE})
 endif()
 
 add_subdirectory(test/init_test)
