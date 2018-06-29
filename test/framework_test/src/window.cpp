@@ -6,6 +6,7 @@
 #include "tools/md5.hpp"
 #include "tools/md5.hpp"
 #include "shaderGLSL.h"
+#include "shaderProgramGLSL.h"
 
 namespace ROOT_NAMESPACE
 {
@@ -28,6 +29,10 @@ namespace ROOT_NAMESPACE
         LOG.info( "md5: ", file::MD5( appaction::instance().assetsPath() + "shader/a.vert" ) );
 
         shaderGLSL & t_shader = shaderGLSL::Create( "a.vert" );
+        t_shader.retain();
+
+        shaderProgramGLSL & t_shaderProgram = shaderProgramGLSL::Create( "a.vert", "a.frag" );
+        t_shaderProgram.retain();
 
         return false;
     }

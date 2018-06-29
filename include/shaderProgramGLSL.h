@@ -12,7 +12,9 @@ namespace ROOT_NAMESPACE
     class shaderProgramGLSL : public object
     {
     public:
-        static shaderProgramGLSL & Create( shaderGLSL & p_vertex, shaderGLSL & p_fragmaent );
+        static shaderProgramGLSL & Create( shaderGLSL & p_vertex, shaderGLSL & p_fragment );
+
+        static shaderProgramGLSL & Create( const std::string & p_vertexName, const std::string & p_fragmentName );
 
         shaderGLSL * getShader( const ShaderType p_type ) const;
         void use(void) const;
@@ -33,7 +35,9 @@ namespace ROOT_NAMESPACE
 
         virtual bool init( void ) override;
 
-        virtual bool initWidthShader( shaderGLSL & p_vertex, shaderGLSL & p_fragmaent );
+        virtual bool initWidthShader( shaderGLSL & p_vertex, shaderGLSL & p_fragment );
+
+        virtual bool initWidthShaderName( const std::string & p_vertexName, const std::string & p_fragmentName );
 
         virtual bool destroy( void ) override;
     private:

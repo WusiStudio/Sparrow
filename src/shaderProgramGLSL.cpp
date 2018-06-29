@@ -3,11 +3,22 @@
 
 namespace ROOT_NAMESPACE
 {
-    shaderProgramGLSL & shaderProgramGLSL::Create( shaderGLSL & p_vertex, shaderGLSL & p_fragmaent )
+    shaderProgramGLSL & shaderProgramGLSL::Create( shaderGLSL & p_vertex, shaderGLSL & p_fragment )
     {
         shaderProgramGLSL & t_result = Create();
 
-        bool t_initResult = t_result.initWidthShader( p_vertex, p_fragmaent );
+        bool t_initResult = t_result.initWidthShader( p_vertex, p_fragment );
+        assert( !t_initResult );
+
+        return t_result;
+    }
+
+
+    shaderProgramGLSL & shaderProgramGLSL::Create( const std::string & p_vertexName, const std::string & p_fragmentName )
+    {
+        shaderProgramGLSL & t_result = Create();
+
+        bool t_initResult = t_result.initWidthShaderName( p_vertexName, p_fragmentName );
         assert( !t_initResult );
 
         return t_result;
@@ -24,7 +35,7 @@ namespace ROOT_NAMESPACE
         return false;
     }
 
-    bool shaderProgramGLSL::initWidthShader( shaderGLSL & p_vertex, shaderGLSL & p_fragmaent )
+    bool shaderProgramGLSL::initWidthShader( shaderGLSL & p_vertex, shaderGLSL & p_fragment )
     {
 
         m_shaderProgramId = glCreateProgram();
@@ -34,9 +45,8 @@ namespace ROOT_NAMESPACE
         }
 
         m_shaderList.push_back( &p_vertex );
-        m_shaderList.push_back( &p_fragmaent );
-
-
+        m_shaderList.push_back( &p_fragment );
+        
         for( shaderGLSL * item : m_shaderList )
         {
             if( attchShader( *item ) )
@@ -51,6 +61,14 @@ namespace ROOT_NAMESPACE
         }
 
         return false;
+    }
+
+    bool shaderProgramGLSL::initWidthShaderName( const std::string & p_vertexName, const std::string & p_fragmentName )
+    {
+        shaderGLSL & t_vertex = shaderGLSL::Create( p_vertexName );
+        shaderGLSL & t_fragment = shaderGLSL::Create( p_fragmentName );
+
+        return initWidthShader( t_vertex, t_fragment );
     }
 
     void shaderProgramGLSL::use(void) const
@@ -132,6 +150,7 @@ namespace ROOT_NAMESPACE
     const bool shaderProgramGLSL::attchShader( shaderGLSL & p_shader )
     {
         const unsigned int shaderId = p_shader.shaderId();
+        
         if( !shaderId )
         {
             LOG.error( "# shaderProgramGLSL::attachShader #  Shader Is Not legitimate!" );

@@ -61,15 +61,12 @@ namespace ROOT_NAMESPACE
         m_shaderType = p_shaderType;
         m_shaderId = glCreateShader( m_shaderType );
 
-
-        
-
         if( glIsShader( m_shaderId ) != GL_TRUE )
         {
-            LOG.info( "----------", GL_VERTEX_SHADER );
-            LOG.info( "----------", m_shaderType ); 
             return true; 
         }
+
+        LOG.info( "shader type: {0}, id: {1}", p_shaderType, m_shaderId );
 
         const GLchar * t_source = p_shaderSource;
         glShaderSource( m_shaderId, 1, &t_source, nullptr );
@@ -142,9 +139,9 @@ namespace ROOT_NAMESPACE
 
     unsigned int shaderGLSL::shaderId( void ) const
     {
-        if( glIsShader( m_shaderId ) != GL_TRUE )
+        if( glIsShader( m_shaderId ) == GL_TRUE )
         { 
-            return m_shaderId; 
+            return m_shaderId;
         }
         return 0;
     }
