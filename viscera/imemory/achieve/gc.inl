@@ -58,7 +58,9 @@ namespace ROOT_NAMESPACE
             //删除超出的缓存对象
             if((*item)->frequencyMinusOne () <= -300 || tCacheList == nullptr )
             {
+                LOG.debug( "detach object:{0}, {1} ", (*item)->realType(), *item );
                 delete *item;
+
                 mObjCacheList.erase( item-- );
                 continue;
             }
@@ -82,9 +84,9 @@ namespace ROOT_NAMESPACE
         }
         std::list< std::list< baseObj* >::iterator > & tCache = *mCaches[0][ tClassName ];
         
-        tCache.push_front( insertToCacheList( p_obj ) );
+        tCache.push_back( insertToCacheList( p_obj ) );
 
-        LOG.debug( "attch object:{1}, {2} mObjCacheList.size() = {0}", mObjCacheList.size(), tClassName, &p_obj );
+        LOG.debug( "attach object:{1}, {2} mObjCacheList.size() = {0}", mObjCacheList.size(), tClassName, &p_obj );
     }
 
     inline baseObj * gc::getObj( const std::string & p_classId )
@@ -116,6 +118,7 @@ namespace ROOT_NAMESPACE
         //销毁所有缓存对象
         for( auto obj : mObjCacheList )
         {
+            LOG.debug( "detach object:{0}, {1} ", obj->realType(), obj );
             delete obj;
         }
         mObjCacheList.clear();
@@ -124,8 +127,8 @@ namespace ROOT_NAMESPACE
 
     inline std::list< baseObj* >::iterator gc::insertToCacheList( baseObj & p_obj )
     {
-        mObjCacheList.push_front( & p_obj );
-        return mObjCacheList.begin();
+        mObjCacheList.push_back( & p_obj );
+        return --mObjCacheList.end();
     }
 
     inline std::map<unsigned int, gc *> & gc::Instances(void)

@@ -1,5 +1,7 @@
 #include "shaderGLSL.h"
 #include "tools/log.hpp"
+#include "appactionInterface.h"
+#include "file.h"
 
 namespace ROOT_NAMESPACE
 {
@@ -7,11 +9,39 @@ namespace ROOT_NAMESPACE
     {
         shaderGLSL & t_result = Create();
 
-        bool t_initResult = t_result.initWitchSource( p_shaderType, p_shaderSource );
+        bool t_initResult = t_result.initWithSource( p_shaderType, p_shaderSource );
 
         assert( !t_initResult );
 
         return t_result;
+    }
+
+    shaderGLSL & shaderGLSL::Create( const std::string & p_fileName )
+    {
+        shaderGLSL & t_result = Create();
+
+        bool t_initResult = t_result.initWithFileName( p_fileName );
+
+        assert( !t_initResult );
+
+        return t_result;
+    }
+
+    shaderGLSL & shaderGLSL::Create( const std::string & p_fileName, const ShaderType p_shaderType )
+    {
+        shaderGLSL & t_result = Create();
+
+        bool t_initResult = t_result.initWithFileNameType( p_fileName, p_shaderType );
+
+        assert( !t_initResult );
+
+        return t_result;
+    }
+
+    std::string & shaderGLSL::shaderPath( void )
+    {
+        static std::string s_shaderPath = appactionInterface::instance().assetsPath() + "shader" + PATH_SPACE;
+        return s_shaderPath;
     }
 
     bool shaderGLSL::init( void )
@@ -26,13 +56,18 @@ namespace ROOT_NAMESPACE
         return false;
     }
 
-    bool shaderGLSL::initWitchSource( const ShaderType p_shaderType, const char * p_shaderSource )
+    bool shaderGLSL::initWithSource( const ShaderType p_shaderType, const char * p_shaderSource )
     {
         m_shaderType = p_shaderType;
         m_shaderId = glCreateShader( m_shaderType );
 
+
+        
+
         if( glIsShader( m_shaderId ) != GL_TRUE )
-        { 
+        {
+            LOG.info( "----------", GL_VERTEX_SHADER );
+            LOG.info( "----------", m_shaderType ); 
             return true; 
         }
 
@@ -63,6 +98,36 @@ namespace ROOT_NAMESPACE
         }
 
         return false;
+    }
+
+    bool shaderGLSL::initWithFileName( const std::string & p_fileName )
+    {
+        std::vector<std::string> t_fileNameSuffix = split( p_fileName, '.' );
+
+        if( t_fileNameSuffix.size() != 2 )
+        {
+            LOG.error( "shader file named error" );
+            return true;
+        }
+
+        if( t_fileNameSuffix[1] == "vert" )
+        {
+            return initWithFileNameType( p_fileName, ShaderType::vertex );
+        }else if( t_fileNameSuffix[1] == "frag" )
+        {
+            return initWithFileNameType( p_fileName, ShaderType::fragment );
+        }
+
+        LOG.error( "sahder file suffix name that can not be identified" );
+
+        return true;
+    }
+
+    bool shaderGLSL::initWithFileNameType( const std::string & p_fileName, const ShaderType p_shaderType )
+    {
+        std::string t_fileSource = file::ReadAllText( shaderPath() + p_fileName );
+
+        return initWithSource( p_shaderType, t_fileSource.c_str() );
     }
 
     bool shaderGLSL::destroy( void )

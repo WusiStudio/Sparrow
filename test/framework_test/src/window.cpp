@@ -5,6 +5,7 @@
 #include "file.h"
 #include "tools/md5.hpp"
 #include "tools/md5.hpp"
+#include "shaderGLSL.h"
 
 namespace ROOT_NAMESPACE
 {
@@ -17,14 +18,16 @@ namespace ROOT_NAMESPACE
             return true;
         }
 
-        // LOG.info( "a.vert: ", file::ReadAllText( "./assets/shader/a.vert" ) );
-        LOG.info( "md5: ", md5( file::ReadAllText( "/Users/wusi/Projects/Sparrow/README.md" ) ).digest() );
+        LOG.info( "{0}: ", appaction::instance().assetsPath() + "shader/a.vert", file::ReadAllText( appaction::instance().assetsPath() + "shader/a.vert" ) );
+        LOG.info( "md5: ", md5( file::ReadAllText( appaction::instance().assetsPath() + "shader/a.vert" ) ).digest() );
 
         std::ifstream t_ifs;
-        t_ifs.open( "/Users/wusi/Projects/Sparrow/README.md", std::ios::binary );
+        t_ifs.open( appaction::instance().assetsPath() + "shader/a.vert" , std::ios::binary );
         LOG.info( "md5: ", md5( t_ifs ).digest() );
 
-        LOG.info( "md5: ", file::MD5( "/Users/wusi/Projects/Sparrow/README.md" ) );
+        LOG.info( "md5: ", file::MD5( appaction::instance().assetsPath() + "shader/a.vert" ) );
+
+        shaderGLSL & t_shader = shaderGLSL::Create( "a.vert" );
 
         return false;
     }

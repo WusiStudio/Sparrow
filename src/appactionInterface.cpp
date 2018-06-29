@@ -1,12 +1,10 @@
+#include "glad/glad.h"
 #include "appactionInterface.h"
 #include "windowInterface.h"
 #include "tools/log.hpp"
+#include <unistd.h>
 
-#if defined(OS_WINDOWS)
-    #define PATH_SPACE "\\"
-#else
-    #define PATH_SPACE "/"
-#endif
+#define PATH_BUFFER_SIZE 1024
 
 namespace ROOT_NAMESPACE
 {
@@ -37,6 +35,22 @@ namespace ROOT_NAMESPACE
         return t_result;
     }
 
+    const std::string & appactionInterface::appactionName( void )
+    {
+        return m_appactionName;
+    }
+
+    const std::string & appactionInterface::appactionPath( void )
+    {
+        return m_appactionPath;
+    }
+
+    const std::string & appactionInterface::assetsPath( void )
+    {
+        static std::string s_assetsPath = m_appactionPath + "assets" + PATH_SPACE;
+        return s_assetsPath;
+    }
+
     void appactionInterface::finish( void )
     {
         m_appactionRunning = false;
@@ -54,6 +68,7 @@ namespace ROOT_NAMESPACE
             return true;
         }
 
+        m_appactionName = "";
         m_appactionPath = "";
 
         return false;
@@ -116,6 +131,8 @@ namespace ROOT_NAMESPACE
     {
         LOG.info("appactionInterface destroy");
 
+        gc::instance().destroy();
+
         return object::destroy();
     }
 
@@ -133,15 +150,74 @@ namespace ROOT_NAMESPACE
 
     bool appactionInterface::startParameter( int p_argc, char ** p_argv )
     {
+#if defined(OS_WINDOWS)
+        m_appactionPath = "";
+#else
+        m_appactionPath = PATH_SPACE;
+#endif
 
-        //加载
-        std::string t_appPath = p_argv[0];
+        std::vector<std::string> t_appPathList;
 
-        std::vector<std::string> t_list = split( t_appPath, PATH_SPACE );
+        //解析程序所在路径
+        std::string t_appStartPath = p_argv[0];
 
-        for( std::string & t_item : t_list )
+        std::vector<std::string> t_startPathList = split( t_appStartPath, PATH_SPACE );
+        
+        m_appactionName = *( t_startPathList.end() - 1 );
+
+        t_startPathList.erase( --t_startPathList.end() );
+
+        //如果通过绝对路径启动
+        if( t_appStartPath[0] == PATH_SPACE[0] || t_startPathList[0][t_startPathList[0].size() - 1] == ':' )
         {
-            LOG.info("dir: ", t_item);
+            if( pathMerga( t_appPathList, t_startPathList ) )
+            {
+                return true;
+            }
+
+        //相对路径
+        }else{
+            char t_pathBuffer[PATH_BUFFER_SIZE];
+            if( !getcwd( t_pathBuffer, PATH_BUFFER_SIZE ) )
+            {
+                LOG.error( "getcwd faild" );
+                return true;
+            }
+
+            std::vector<std::string> t_workPathList = split( t_pathBuffer, PATH_SPACE );
+            if( pathMerga( t_appPathList, t_workPathList ) )
+            {
+                return true;
+            }
+
+            if( pathMerga( t_appPathList, t_startPathList ) )
+            {
+                return true;
+            }
+        }
+
+        for( std::string & t_dir : t_appPathList )
+        {
+            m_appactionPath += t_dir + PATH_SPACE;
+        }
+
+        return false;
+    }
+
+    bool appactionInterface::pathMerga( std::vector< std::string > & p_target, const std::vector< std::string > & p_sub )
+    {
+        for( int i = 0; i < p_sub.size(); ++i )
+        {
+            if( p_sub[i].size() == 0 || p_sub[i] == "." )
+            {
+                continue;
+            }
+            if( p_sub[i] == ".." && p_target.size() > 0 )
+            {
+                p_target.erase( --p_target.end() );
+                continue;
+            }
+            p_target.push_back( p_sub[i] );
         }
 
         return false;
@@ -161,4 +237,6 @@ namespace ROOT_NAMESPACE
             item->draw();
         }
     }
+
+
 }

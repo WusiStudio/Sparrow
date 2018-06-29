@@ -2,9 +2,10 @@
 #ifndef __WINDOW_INTERFACE_H__
 #define __WINDOW_INTERFACE_H__
 
+#include "GLFW/glfw3.h"
+
 #include "imemory/object.hpp"
 #include "basicsInterface.h"
-#include "GLFW/glfw3.h"
 #include <list>
 #include <string>
 #include "glm/glm.hpp"

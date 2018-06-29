@@ -48,6 +48,7 @@ namespace ROOT_NAMESPACE
 
 	//分割字符串
 	std::vector<std::string> split( const std::string & p_str, const std::string & p_clapboard );
+	std::vector<std::string> split( const std::string & p_str, const char p_clapboard );
 }
 
 #endif //__STR_EXT_HPP__

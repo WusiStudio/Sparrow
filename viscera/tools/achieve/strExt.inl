@@ -637,6 +637,11 @@ namespace ROOT_NAMESPACE
 
         return t_result;
     }
+
+    inline std::vector<std::string> split( const std::string & p_str, const char p_clapboard )
+    {
+        return split( p_str, std::string( 1, p_clapboard ) );
+    }
 }
 
 #endif //__STR_EXT_INL__

@@ -1,3 +1,4 @@
+#include "glad/glad.h"
 #include "windowInterface.h"
 #include "appactionInterface.h"
 
@@ -30,6 +31,7 @@ namespace ROOT_NAMESPACE
             return true;
         }
 
+    
         m_fps = 0;
         m_prveTime = time( &m_prveTime );
 
@@ -43,6 +45,44 @@ namespace ROOT_NAMESPACE
             glfwTerminate();
             return true;
         }
+
+        glfwMakeContextCurrent( m_glfwWindow );
+        gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
+        //启用多重采样
+        glEnable(GL_MULTISAMPLE);
+
+        //判断多重采样是否启用成功
+        if(glIsEnabled(GL_MULTISAMPLE))
+        {
+            GLint buffers ,samples;
+            glGetIntegerv(GL_SAMPLE_BUFFERS,&buffers);
+            glGetIntegerv(GL_SAMPLES,&samples);
+
+            if(buffers > 0 && samples > 0)
+            {
+                LOG.info("Enabled Multisample! buffers: {0}, samples: {1}", buffers, samples);
+            }    
+        }
+        
+        //启用深度测试
+        glEnable(GL_DEPTH_TEST);
+        if(glIsEnabled(GL_DEPTH_TEST))
+        {
+            LOG.info("Enabled Depth Test!");
+        }
+
+        //启用图元重启
+        glEnable(GL_PRIMITIVE_RESTART);
+        glPrimitiveRestartIndex(0xFFFF);
+        if(glIsEnabled(GL_PRIMITIVE_RESTART))
+        {
+            LOG.info("Enabled Primitive Restart!");
+        }
+
+        //启用混合
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 
         glfwSetWindowPos(m_glfwWindow, p_position.x, p_position.y );
 

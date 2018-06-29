@@ -61,6 +61,8 @@ add_library(${PROJECT_NAME} ${SOURCE})
 # SET(LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build/bin)
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/build/bin)
 
+target_link_libraries(${PROJECT_NAME} glad)
+
 if(OS_Darwin)
     target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARY}/OpenGL.tbd ${IOKIT_LIBRARY}/IOKit.tbd)
     FILE(COPY ${CMAKE_HOME_DIRECTORY}/assets DESTINATION ${CMAKE_HOME_DIRECTORY}/build/bin)

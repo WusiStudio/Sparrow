@@ -3,7 +3,6 @@
 #define __SHADER_PROGRAM_GLSL_H__
 
 #include "imemory/object.hpp"
-#include "glad/glad.h"
 #include "shaderGLSL.h"
 #include <list>
 #include "glm/glm.hpp"
