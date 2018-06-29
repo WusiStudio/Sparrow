@@ -131,8 +131,6 @@ namespace ROOT_NAMESPACE
     {
         LOG.info("appactionInterface destroy");
 
-        gc::instance().destroy();
-
         return object::destroy();
     }
 
@@ -237,6 +235,5 @@ namespace ROOT_NAMESPACE
             item->draw();
         }
     }
-
 
 }

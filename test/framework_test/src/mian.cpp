@@ -2,7 +2,11 @@
 
 int main(int argc, char ** argv)
 {
-    IMSTACK
+    {
+        IMSTACK
 
-    ws::appaction::Create( argc, argv );
+        ws::appaction::Create( argc, argv );
+    }
+
+    IMFREE
 } 

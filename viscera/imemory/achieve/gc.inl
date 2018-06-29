@@ -122,7 +122,13 @@ namespace ROOT_NAMESPACE
             delete obj;
         }
         mObjCacheList.clear();
-        return baseObj::destroy ();
+        baseObj::destroy ();
+
+        unsigned int tThreadId = PthreadSelf();
+        Instances().erase( tThreadId );
+        delete this;
+
+        return false;
     }
 
     inline std::list< baseObj* >::iterator gc::insertToCacheList( baseObj & p_obj )

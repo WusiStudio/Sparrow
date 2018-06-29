@@ -41,6 +41,8 @@ namespace ROOT_NAMESPACE
 #define IMSTACK		ROOT_NAMESPACE::gcWorker __FILE_##__LINE__;
 #define IMGCMake	ROOT_NAMESPACE::gc::instance().makeCache();
 
+#define IMFREE      ROOT_NAMESPACE::gc::instance().destroy();
+
 #define ATTIRBUTE( type, name )                     \
     DEFINE_ATTIRBUTE( type, name )                       
 
