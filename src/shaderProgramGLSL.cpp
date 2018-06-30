@@ -1,4 +1,6 @@
 #include "glad/glad.h"
+#include "GLFW/glfw3.h"
+
 #include "shaderProgramGLSL.h"
 
 namespace ROOT_NAMESPACE

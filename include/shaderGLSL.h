@@ -2,7 +2,8 @@
 #ifndef __SHADER_GLSL_H__
 #define __SHADER_GLSL_H__
 
-#include "GLFW/glfw3.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 #include "imemory/object.hpp"
 

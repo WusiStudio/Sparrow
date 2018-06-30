@@ -2,8 +2,8 @@
 #ifndef __SHADER_PROGRAM_GLSL_H__
 #define __SHADER_PROGRAM_GLSL_H__
 
-#include "imemory/object.hpp"
 #include "shaderGLSL.h"
+#include "imemory/object.hpp"
 #include <list>
 #include "glm/glm.hpp"
 

@@ -1,3 +1,4 @@
+#include "glad/glad.h"
 #include "window.h"
 #include "tools/log.hpp"
 #include "appaction.h"

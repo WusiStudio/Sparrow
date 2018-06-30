@@ -2,7 +2,14 @@
 #include "appactionInterface.h"
 #include "windowInterface.h"
 #include "tools/log.hpp"
+
+#if defined(OS_WINDOWS)
+#include <direct.h>
+#define GETCWD _getcwd
+#else
 #include <unistd.h>
+#define GETCWD getcwd
+#endif
 
 #define PATH_BUFFER_SIZE 1024
 
@@ -176,7 +183,7 @@ namespace ROOT_NAMESPACE
         //相对路径
         }else{
             char t_pathBuffer[PATH_BUFFER_SIZE];
-            if( !getcwd( t_pathBuffer, PATH_BUFFER_SIZE ) )
+            if( !GETCWD( t_pathBuffer, PATH_BUFFER_SIZE ) )
             {
                 LOG.error( "getcwd faild" );
                 return true;
