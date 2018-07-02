@@ -134,6 +134,17 @@ namespace ROOT_NAMESPACE
 
     bool shaderProgramGLSL::destroy( void )
     {
+
+        for( shaderGLSL * item : m_shaderList )
+        {
+            if( attchShader( *item ) )
+            {
+                return true;
+            }
+        }
+
+        m_shaderList.clear();
+
         if( glIsProgram(m_shaderProgramId) == GL_TRUE )
         {
             glDeleteProgram( m_shaderProgramId );
@@ -192,6 +203,16 @@ namespace ROOT_NAMESPACE
 
             return true;
         }
+
+        for( shaderGLSL * item : m_shaderList )
+        {
+            if( attchShader( *item ) )
+            {
+                return true;
+            }
+        }
+
+        m_shaderList.clear();
 
         return false;
     }
