@@ -33,7 +33,7 @@ namespace ROOT_NAMESPACE
         t_shader.retain();
 
         shaderProgramGLSL & t_shaderProgram = shaderProgramGLSL::Create( "a.vert", "a.frag" );
-        t_shaderProgram.retain();
+        // t_shaderProgram.retain();
 
         return false;
     }

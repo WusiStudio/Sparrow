@@ -45,7 +45,7 @@ namespace ROOT_NAMESPACE
         const bool attchShader( shaderGLSL & p_shader );
         const bool detachShader( shaderGLSL & p_shader );
 
-        const bool linkProgram( void ) const;
+        const bool linkProgram( void );
 
         GLuint getUniformLocation( const char * name ) const;
 

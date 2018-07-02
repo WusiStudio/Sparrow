@@ -77,13 +77,20 @@ namespace ROOT_NAMESPACE
     
     inline void gc::cacheObj( baseObj & p_obj )
     {
+
+        std::list< baseObj* >::iterator t_it = std::find( mObjCacheList.begin(), mObjCacheList.end(), &p_obj );
+        if( t_it != mObjCacheList.end() )
+        {
+            return;
+        }
+
         std::string tClassName = p_obj.realType();
         if( mCaches[0].find( tClassName ) == mCaches[0].end() )
         {
             mCaches[0][ tClassName ] = new std::list< std::list< baseObj* >::iterator >();
         }
         std::list< std::list< baseObj* >::iterator > & tCache = *mCaches[0][ tClassName ];
-        
+
         tCache.push_back( insertToCacheList( p_obj ) );
 
         LOG.debug( "attach object:{1}, {2} mObjCacheList.size() = {0}", mObjCacheList.size(), tClassName, &p_obj );

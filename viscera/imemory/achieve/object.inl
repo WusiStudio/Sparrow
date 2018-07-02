@@ -15,7 +15,7 @@ namespace ROOT_NAMESPACE
     {
         baseObj::release();
 
-        if( baseObj::quote() <= 0 )
+        if( baseObj::quote() < 0 )
         {
             this->destroy();
             gcWorker::remove( *this );

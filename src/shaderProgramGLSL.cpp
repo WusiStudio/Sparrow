@@ -134,17 +134,11 @@ namespace ROOT_NAMESPACE
 
     bool shaderProgramGLSL::destroy( void )
     {
-        for( shaderGLSL * item : m_shaderList )
+        if( glIsProgram(m_shaderProgramId) == GL_TRUE )
         {
-            if( detachShader( *item ) )
-            {
-                return true;
-            }
+            glDeleteProgram( m_shaderProgramId );
+            m_shaderProgramId = 0;
         }
-
-        m_shaderList.clear();
-
-        glDeleteProgram( m_shaderProgramId );
 
         return false;
     }
@@ -176,9 +170,17 @@ namespace ROOT_NAMESPACE
         return false;
     }
 
-    const bool shaderProgramGLSL::linkProgram( void ) const
+    const bool shaderProgramGLSL::linkProgram( void )
     {
         glLinkProgram( m_shaderProgramId );
+
+        for( shaderGLSL * item : m_shaderList )
+        {
+            if( detachShader( *item ) )
+            {
+                return true;
+            }
+        }
 
         GLint linked;
         glGetProgramiv( m_shaderProgramId, GL_LINK_STATUS, &linked );
@@ -198,6 +200,8 @@ namespace ROOT_NAMESPACE
 
             return true;
         }
+
+        m_shaderList.clear();
 
         return false;
     }
