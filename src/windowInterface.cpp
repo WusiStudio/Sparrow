@@ -65,12 +65,12 @@ namespace ROOT_NAMESPACE
             }    
         }
         
-        //启用深度测试
-        glEnable(GL_DEPTH_TEST);
-        if(glIsEnabled(GL_DEPTH_TEST))
-        {
-            LOG.info("Enabled Depth Test!");
-        }
+        // //启用深度测试
+        // glEnable(GL_DEPTH_TEST);
+        // if(glIsEnabled(GL_DEPTH_TEST))
+        // {
+        //     LOG.info("Enabled Depth Test!");
+        // }
 
         //启用图元重启
         glEnable(GL_PRIMITIVE_RESTART);
@@ -142,10 +142,10 @@ namespace ROOT_NAMESPACE
         glfwMakeContextCurrent( m_glfwWindow );
         glfwSwapInterval(0);
 
-        // glViewport(0, 0, width, height);
+        // glViewport(0, 0, 800, 600);
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
+        glClear( GL_COLOR_BUFFER_BIT );
 
         onDraw();
 

@@ -2,6 +2,7 @@
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
 
+#include "shaderProgramGLSL.h"
 #include "windowInterface.h"
 
 namespace ROOT_NAMESPACE
@@ -16,6 +17,9 @@ namespace ROOT_NAMESPACE
 
         virtual void onTick( double p_dt ) override;
         virtual void onDraw( void ) override;
+    private:
+        shaderProgramGLSL * m_shaderProgram;
+        GLuint m_vao, m_vbo, m_ebo;
     };
 }
 

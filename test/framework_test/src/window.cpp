@@ -1,4 +1,3 @@
-#include "glad/glad.h"
 #include "window.h"
 #include "tools/log.hpp"
 #include "appaction.h"
@@ -6,11 +5,22 @@
 #include "file.h"
 #include "tools/md5.hpp"
 #include "tools/md5.hpp"
-#include "shaderGLSL.h"
-#include "shaderProgramGLSL.h"
 
 namespace ROOT_NAMESPACE
 {
+
+    float vertices[] = {
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left 
+    };
+
+    unsigned int indices[] = {  // note that we start from 0!
+        0, 1, 3,  // first Triangle
+        1, 2, 3   // second Triangle
+    };
+
     bool window::init(void)
     {
         const glm::ivec2 t_screenSize = *appaction::GetScreenSize().begin();
@@ -33,7 +43,28 @@ namespace ROOT_NAMESPACE
         t_shader.retain();
 
         shaderProgramGLSL & t_shaderProgram = shaderProgramGLSL::Create( "a.vert", "a.frag" );
-        // t_shaderProgram.retain();
+        t_shaderProgram.retain();
+        m_shaderProgram = &t_shaderProgram;
+
+
+        glGenVertexArrays( 1, &m_vao );
+        glGenBuffers( 1, &m_vbo );
+        glGenBuffers(1, &m_ebo );
+
+        glBindVertexArray( m_vao );
+
+        glBindBuffer( GL_ARRAY_BUFFER, m_vbo );
+        glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_ebo );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW );
+
+
+        glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0 );
+        glEnableVertexAttribArray(0);
+
+        glBindBuffer( GL_ARRAY_BUFFER, 0 ); 
+        glBindVertexArray( 0 ); 
 
         return false;
     }
@@ -45,6 +76,9 @@ namespace ROOT_NAMESPACE
 
     void window::onDraw( void )
     {
-
+        m_shaderProgram->use();
+        glBindVertexArray( m_vao );
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // glDrawArrays( GL_TRIANGLES, 0, 3 );
     }
 }

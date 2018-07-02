@@ -1,5 +1,5 @@
-#include "appaction.h"
 #include "window.h"
+#include "appaction.h"
 
 
 namespace ROOT_NAMESPACE

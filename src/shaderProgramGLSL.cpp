@@ -174,14 +174,6 @@ namespace ROOT_NAMESPACE
     {
         glLinkProgram( m_shaderProgramId );
 
-        for( shaderGLSL * item : m_shaderList )
-        {
-            if( detachShader( *item ) )
-            {
-                return true;
-            }
-        }
-
         GLint linked;
         glGetProgramiv( m_shaderProgramId, GL_LINK_STATUS, &linked );
         if( linked != GL_TRUE )
@@ -200,8 +192,6 @@ namespace ROOT_NAMESPACE
 
             return true;
         }
-
-        m_shaderList.clear();
 
         return false;
     }
