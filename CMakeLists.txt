@@ -64,7 +64,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_HOME_DIRECTORY}/build/bin)
 target_link_libraries(${PROJECT_NAME} glad)
 
 if(OS_Darwin)
-    target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARY}/OpenGL.tbd ${IOKIT_LIBRARY}/IOKit.tbd)
+    target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARY} ${IOKIT_LIBRARY} )
     FILE(COPY ${CMAKE_HOME_DIRECTORY}/assets DESTINATION ${CMAKE_HOME_DIRECTORY}/build/bin)
 elseif(OS_WINDOWS)
     target_link_libraries(${PROJECT_NAME} opengl32)
